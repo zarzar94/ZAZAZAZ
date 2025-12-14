@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh pr list:*)",
+      "Bash(xxd:*)",
+      "Bash(dir:*)",
+      "Bash(npm audit:*)",
+      "Bash(npm run build:*)"
+    ]
+  }
+}
