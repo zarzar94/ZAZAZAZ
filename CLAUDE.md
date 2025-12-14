@@ -37,7 +37,7 @@ VITE_CLINIC_PHONE=+966XXXXXXXXX
 - `src/utils/pdf.ts` - Shared PDF utilities (font caching, Arabic RTL text)
 - `src/data/clinic.ts` - Clinic configuration (reads phone from env var)
 - `src/vite-env.d.ts` - TypeScript types for Vite environment variables
-- `public/fonts/` - Tajawal Arabic font files for PDF generation
+- `public/fonts/` - Cairo Arabic font files for PDF generation
 
 ### Key Features
 - **PDF Generation**: Uses jsPDF with custom Arabic font loading (shared `src/utils/pdf.ts`)
@@ -52,7 +52,7 @@ Shared utilities for proper Arabic PDF rendering:
 - `writePdfText()` - Handles RTL text positioning and options automatically
 - `PDF_MARGIN_X` - Standard margin constant
 - Fonts are cached after first load for faster subsequent PDF generation
-- Font files must exist at `/fonts/Tajawal-Regular.ttf` and `/fonts/Tajawal-Bold.ttf`
+- Font files must exist at `/fonts/Cairo-Regular.ttf` and `/fonts/Cairo-Bold.ttf`
 
 ### Performance Optimizations
 - **Lazy Loading**: SlideViewer, Checklist, GameSection, ContactForm loaded on demand

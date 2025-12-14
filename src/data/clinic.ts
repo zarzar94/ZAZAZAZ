@@ -12,7 +12,7 @@ export type Clinic = {
 const CLINIC_PHONE = import.meta.env.VITE_CLINIC_PHONE || '';
 
 if (!CLINIC_PHONE && import.meta.env.DEV) {
-  console.warn('⚠️ VITE_CLINIC_PHONE not set. WhatsApp links will not work correctly.');
+  console.warn('[Lotus AIT] VITE_CLINIC_PHONE not set. WhatsApp links will not work correctly.');
 }
 
 export const clinic: Clinic = {

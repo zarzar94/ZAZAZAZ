@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
-import { clinic } from '../data/clinic';
 import { styles } from './styles';
+import { handleWhatsApp } from '../utils/whatsapp';
 
 // Input validation constants
 const MAX_NAME_LENGTH = 100;
@@ -20,20 +20,6 @@ const sanitizeInput = (input: string, maxLength: number): string => {
 const validatePhone = (phone: string): boolean => {
   return SAUDI_PHONE_REGEX.test(phone);
 };
-
-const handleWhatsApp = (payload?: string) => {
-  const clinicPhone = clinic.phone ?? '';
-  if (!clinicPhone) {
-    console.error('Clinic phone number not configured');
-    return;
-  }
-  const text = payload ?? `مرحبا، أرغب في الاستفسار عن برنامج بيرار AIT لدى ${clinic.nameAr ?? clinic.name}.`;
-  const sanitizedText = text.slice(0, 2000); // WhatsApp URL limit
-  const url = `https://wa.me/${clinicPhone.replace(/\D/g, '')}?text=${encodeURIComponent(sanitizedText)}`;
-  window.open(url, '_blank', 'noreferrer');
-};
-
-export { handleWhatsApp };
 
 type FormErrors = {
   name?: string;

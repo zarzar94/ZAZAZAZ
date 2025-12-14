@@ -9,7 +9,7 @@ export const styles: Record<string, CSSProperties> = {
     background: '#05060d',
     color: '#f7f8fb',
     minHeight: '100vh',
-    fontFamily: 'Tajawal, system-ui, -apple-system, Segoe UI, sans-serif',
+    fontFamily: 'Cairo, system-ui, -apple-system, Segoe UI, sans-serif',
   },
   header: {
     position: 'sticky',

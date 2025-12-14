@@ -1,8 +1,9 @@
 import { lazy, Suspense, useCallback, useEffect } from 'react';
-import { Header, handleWhatsApp, styles } from './components';
-import { checklistItems } from './components/Checklist';
+import { Header, styles } from './components';
+import { checklistItems } from './data/checklistItems';
 import { clinic } from './data/clinic';
 import { createPdfDoc, writePdfText, PDF_MARGIN_X } from './utils/pdf';
+import { handleWhatsApp } from './utils/whatsapp';
 
 // Lazy load heavy components for better initial load performance
 const SlideViewer = lazy(() => import('./components/SlideViewer'));
@@ -32,7 +33,7 @@ export default function App() {
     writePdfText(doc, clinic.nameAr ?? clinic.name, PDF_MARGIN_X, y);
     y += 22;
     writePdfText(doc, 'قائمة التحقق الأولية', PDF_MARGIN_X, y);
-    doc.setFont(fontReady ? 'Tajawal' : 'helvetica', 'normal');
+    doc.setFont(fontReady ? 'Cairo' : 'helvetica', 'normal');
     doc.setFontSize(12);
     y += 24;
     checklistItems.forEach((item, idx) => {

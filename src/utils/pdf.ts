@@ -23,8 +23,8 @@ type FontAsset = {
 
 // Font cache - loaded once, reused across all PDF generations
 const arabicFonts: FontAsset[] = [
-  { url: '/fonts/Tajawal-Regular.ttf', vfsName: 'Tajawal-Regular.ttf', fontName: 'Tajawal', fontStyle: 'normal' },
-  { url: '/fonts/Tajawal-Bold.ttf', vfsName: 'Tajawal-Bold.ttf', fontName: 'Tajawal', fontStyle: 'bold' },
+  { url: '/fonts/Cairo-Regular.ttf', vfsName: 'Cairo-Regular.ttf', fontName: 'Cairo', fontStyle: 'normal' },
+  { url: '/fonts/Cairo-Bold.ttf', vfsName: 'Cairo-Bold.ttf', fontName: 'Cairo', fontStyle: 'bold' },
 ];
 
 const arrayBufferToBase64 = (buffer: ArrayBuffer): string => {
@@ -48,7 +48,7 @@ const ensurePdfFonts = async (doc: jsPDF): Promise<void> => {
     doc.addFileToVFS(font.vfsName, font.data);
     doc.addFont(font.vfsName, font.fontName, font.fontStyle);
   }
-  doc.setFont('Tajawal', 'normal');
+  doc.setFont('Cairo', 'normal');
 };
 
 export type PdfDocResult = {
@@ -65,7 +65,7 @@ export const createPdfDoc = async (): Promise<PdfDocResult> => {
     console.error('Failed to load Arabic PDF font', error);
     fontReady = false;
   }
-  doc.setFont(fontReady ? 'Tajawal' : 'helvetica', 'bold');
+  doc.setFont(fontReady ? 'Cairo' : 'helvetica', 'bold');
   return { doc, fontReady };
 };
 

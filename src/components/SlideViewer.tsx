@@ -49,7 +49,7 @@ export default function SlideViewer() {
     writePdfText(doc, clinic.nameAr ?? clinic.name, PDF_MARGIN_X, y);
     y += 22;
     writePdfText(doc, 'عرض الشرائح - ملخص نصي', PDF_MARGIN_X, y);
-    doc.setFont(fontReady ? 'Tajawal' : 'helvetica', 'normal');
+    doc.setFont(fontReady ? 'Cairo' : 'helvetica', 'normal');
     doc.setFontSize(12);
     y += 24;
     slides.forEach((s) => {

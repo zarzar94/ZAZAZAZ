@@ -1,26 +1,8 @@
 import { memo, useCallback, useMemo, useState } from 'react';
+import { checklistItems } from '../data/checklistItems';
 import { clinic } from '../data/clinic';
 import { createPdfDoc, writePdfText, PDF_MARGIN_X } from '../utils/pdf';
 import { styles } from './styles';
-
-export const checklistItems = [
-  'يطلب تكرار التعليمات كثيراً',
-  'تشتت سريع مع الضوضاء',
-  'يعاني من صعوبة في التمييز بين الأصوات المتقاربة',
-  'يتضايق من الأصوات العالية أو المفاجئة',
-  'صعوبة في التركيز داخل الصف',
-  'مشكلات في الإملاء أو القراءة',
-  'استجابات انفعالية مع الأصوات',
-  'يشكو من طنين أو صداع مع الضوضاء',
-  'يتجنب الأنشطة السمعية',
-  'يجد صعوبة في تتبع التعليمات المتسلسلة',
-  'يواجه صعوبة في فهم الكلام السريع',
-  'يفضل العزلة في البيئات المزدحمة',
-  'يواجه صعوبة في متابعة المحادثات الجماعية',
-  'يظهر تأخراً في الاستجابة اللفظية',
-  'يعاني من سوء النطق لبعض الأصوات',
-  'تعب شديد بعد المواقف السمعية المكثفة',
-];
 
 // Memoized checklist item to prevent re-renders when other items change
 const ChecklistItem = memo(function ChecklistItem({
@@ -70,7 +52,7 @@ export default function Checklist() {
     writePdfText(doc, clinic.nameAr ?? clinic.name, PDF_MARGIN_X, y);
     y += 22;
     writePdfText(doc, 'قائمة التحقق الأولية', PDF_MARGIN_X, y);
-    doc.setFont(fontReady ? 'Tajawal' : 'helvetica', 'normal');
+    doc.setFont(fontReady ? 'Cairo' : 'helvetica', 'normal');
     doc.setFontSize(12);
     y += 24;
     checklistItems.forEach((item, idx) => {
