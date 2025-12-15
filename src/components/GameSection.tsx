@@ -134,7 +134,7 @@ function ToneGame({ onComplete, onClose }: { onComplete: (r: GameResult) => void
     osc.start();
     gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
     osc.stop(ctx.currentTime + 0.5);
-  }, []);
+  }, [getAudioContext]);
 
   const playTargetTone = () => playTone(880);
 
