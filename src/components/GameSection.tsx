@@ -110,11 +110,21 @@ function ToneGame({ onComplete, onClose }: { onComplete: (r: GameResult) => void
   const [done, setDone] = useState(false);
   const [feedback, setFeedback] = useState<'correct' | 'wrong' | null>(null);
   const audioCtxRef = useRef<AudioContext | null>(null);
+  const audioCtor = typeof window !== 'undefined' ? (window.AudioContext ?? (window as any).webkitAudioContext) : null;
+  const supportsAudio = !!audioCtor;
   const totalRounds = 10;
 
-  const playTone = useCallback((freq: number) => {
-    if (!audioCtxRef.current) audioCtxRef.current = new AudioContext();
+  const getAudioContext = useCallback(() => {
+    if (!supportsAudio) return null;
+    if (!audioCtxRef.current) audioCtxRef.current = new audioCtor();
     const ctx = audioCtxRef.current;
+    if (ctx.state === 'suspended') void ctx.resume();
+    return ctx;
+  }, [audioCtor, supportsAudio]);
+
+  const playTone = useCallback((freq: number) => {
+    const ctx = getAudioContext();
+    if (!ctx) return;
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.connect(gain);
@@ -187,6 +197,16 @@ function ToneGame({ onComplete, onClose }: { onComplete: (r: GameResult) => void
           <h3 style={{ margin: 0 }}>مطابقة النغمات</h3>
           <button style={styles.ghostBtn} onClick={onClose}>إغلاق</button>
         </div>
+        {(!supportsAudio || !supportsSpeech) && (
+          <p style={{ color: '#f59e0b', fontSize: 12, margin: '0 0 10px' }}>
+            Sound and speech cues may be unavailable in this browser.
+          </p>
+        )}
+        {!supportsAudio && (
+          <p style={{ color: '#f59e0b', fontSize: 12, margin: '0 0 8px' }}>
+            Audio is blocked or unsupported in this browser; sound cues may be muted.
+          </p>
+        )}
         <p style={{ opacity: 0.7, marginBottom: 12 }}>الجولة {round + 1} من {totalRounds}</p>
         <button onClick={playTargetTone} style={{ ...styles.ghostBtn, marginBottom: 16 }}>
           استمع للنغمة المستهدفة (880Hz)
@@ -228,6 +248,9 @@ function ClassroomGame({ onComplete, onClose }: { onComplete: (r: GameResult) =>
   const [noiseLevel, setNoiseLevel] = useState(0);
   const audioCtxRef = useRef<AudioContext | null>(null);
   const noiseRef = useRef<AudioBufferSourceNode | null>(null);
+  const audioCtor = typeof window !== 'undefined' ? (window.AudioContext ?? (window as any).webkitAudioContext) : null;
+  const supportsAudio = !!audioCtor;
+  const supportsSpeech = typeof window !== 'undefined' && 'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
 
   const shapes = [
     { id: 'blue-circle', label: 'الدائرة الزرقاء', color: '#3b82f6', shape: 'circle' },
@@ -238,8 +261,10 @@ function ClassroomGame({ onComplete, onClose }: { onComplete: (r: GameResult) =>
   ];
 
   const startNoise = useCallback((level: number) => {
-    if (!audioCtxRef.current) audioCtxRef.current = new AudioContext();
+    if (!supportsAudio) return;
+    if (!audioCtxRef.current) audioCtxRef.current = new audioCtor();
     const ctx = audioCtxRef.current;
+    if (ctx.state === 'suspended') void ctx.resume();
     if (noiseRef.current) { noiseRef.current.stop(); noiseRef.current = null; }
     if (level === 0) return;
     const bufferSize = ctx.sampleRate * 2;
@@ -255,14 +280,15 @@ function ClassroomGame({ onComplete, onClose }: { onComplete: (r: GameResult) =>
     gain.gain.value = level * 0.15;
     source.start();
     noiseRef.current = source;
-  }, []);
+  }, [supportsAudio, audioCtor]);
 
   const speak = useCallback((text: string) => {
+    if (!supportsSpeech) return;
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'ar-SA';
     utterance.rate = 0.9;
     speechSynthesis.speak(utterance);
-  }, []);
+  }, [supportsSpeech]);
 
   const startRound = useCallback(() => {
     if (round >= classroomInstructions.length) {
@@ -325,6 +351,11 @@ function ClassroomGame({ onComplete, onClose }: { onComplete: (r: GameResult) =>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
           <h3 style={{ margin: 0 }}>محاكاة صف دراسي</h3>
           <button style={styles.ghostBtn} onClick={onClose}>إغلاق</button>
+        {(!supportsAudio || !supportsSpeech) && (
+          <p style={{ color: '#f59e0b', fontSize: 12, margin: '0 0 10px' }}>
+            Sound and speech cues may be unavailable in this browser.
+          </p>
+        )}
         </div>
         {round === 0 && showInstruction ? (
           <div style={{ textAlign: 'center' }}>

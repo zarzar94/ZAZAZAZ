@@ -3,7 +3,7 @@ import { Header, styles } from './components';
 import { checklistItems } from './data/checklistItems';
 import { clinic } from './data/clinic';
 import { createPdfDoc, writePdfText, PDF_MARGIN_X } from './utils/pdf';
-import { handleWhatsApp } from './utils/whatsapp';
+import { handleWhatsApp, whatsappConfig } from './utils/whatsapp';
 
 // Lazy load heavy components for better initial load performance
 const SlideViewer = lazy(() => import('./components/SlideViewer'));
@@ -44,6 +44,20 @@ export default function App() {
     doc.save('ait-checklist.pdf');
   }, []);
 
+  const canWhatsApp = whatsappConfig.isConfigured;
+  const whatsappTitle = canWhatsApp ? undefined : whatsappConfig.error ?? undefined;
+  const fabStyle = {
+    ...styles.fab,
+    opacity: canWhatsApp ? 1 : 0.5,
+    pointerEvents: canWhatsApp ? 'auto' as const : 'none' as const,
+  };
+  const heroWhatsAppButtonProps = {
+    style: canWhatsApp ? styles.primaryBtn : styles.disabledBtn,
+    onClick: () => handleWhatsApp(),
+    disabled: !canWhatsApp,
+    title: whatsappTitle,
+  };
+
   return (
     <div style={styles.page}>
       <Header />
@@ -56,7 +70,7 @@ export default function App() {
               نسخة تجريبية عربية للعيادة مع تجربة متكاملة: شرائح، قائمة تحقق، ألعاب تفاعلية، وروابط تواصل.
             </p>
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-              <button style={styles.primaryBtn} onClick={() => handleWhatsApp()}>
+              <button {...heroWhatsAppButtonProps}>
                 تواصل واتساب
               </button>
               <button style={styles.ghostBtn} onClick={handleDownloadChecklistPdf}>
@@ -84,10 +98,13 @@ export default function App() {
         href="#"
         onClick={(e) => {
           e.preventDefault();
+          if (!canWhatsApp) return;
           handleWhatsApp();
         }}
-        style={styles.fab}
-        aria-label="واتساب سريع"
+        style={fabStyle}
+        aria-label="Open WhatsApp chat"
+        aria-disabled={!canWhatsApp}
+        title={whatsappTitle}
       >
         💬
       </a>

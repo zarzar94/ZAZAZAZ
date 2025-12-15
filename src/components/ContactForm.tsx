@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { styles } from './styles';
-import { handleWhatsApp } from '../utils/whatsapp';
+import { handleWhatsApp, whatsappConfig } from '../utils/whatsapp';
 
 // Input validation constants
 const MAX_NAME_LENGTH = 100;
@@ -30,9 +30,15 @@ type FormErrors = {
 
 export default function ContactForm() {
   const [errors, setErrors] = useState<FormErrors>({});
+  const canWhatsApp = whatsappConfig.isConfigured;
+  const whatsappHint = whatsappConfig.error ?? 'WhatsApp contact is disabled until a clinic phone is set.';
 
   const contactFormSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!canWhatsApp) {
+      console.error('[Lotus AIT] WhatsApp disabled - missing clinic phone');
+      return;
+    }
     const form = new FormData(event.currentTarget);
 
     // Sanitize inputs
@@ -67,10 +73,20 @@ export default function ContactForm() {
           <h2 style={styles.h2}>تواصل معنا</h2>
           <p style={styles.muted}>نموذج واتساب سريع باللغة العربية (RTL).</p>
         </div>
-        <button style={styles.ghostBtn} onClick={() => handleWhatsApp()}>
+        <button
+          style={canWhatsApp ? styles.ghostBtn : styles.disabledBtn}
+          onClick={() => canWhatsApp && handleWhatsApp()}
+          disabled={!canWhatsApp}
+          title={canWhatsApp ? undefined : whatsappHint}
+        >
           واتساب مباشر
         </button>
       </div>
+      {!canWhatsApp && (
+        <p style={{ color: '#f59e0b', margin: '8px 0 12px', fontSize: 13 }}>
+          WhatsApp contact is disabled until VITE_CLINIC_PHONE is set.
+        </p>
+      )}
       <form onSubmit={contactFormSubmit} style={styles.form}>
         <label style={styles.formField}>
           <span>الاسم</span>
@@ -113,7 +129,12 @@ export default function ContactForm() {
             placeholder="اكتب ملاحظاتك هنا"
           />
         </label>
-        <button type="submit" style={styles.primaryBtn}>
+        <button
+          type="submit"
+          style={canWhatsApp ? styles.primaryBtn : styles.disabledBtn}
+          disabled={!canWhatsApp}
+          title={canWhatsApp ? undefined : whatsappHint}
+        >
           إرسال عبر واتساب
         </button>
       </form>

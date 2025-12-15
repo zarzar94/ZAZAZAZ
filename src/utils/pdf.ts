@@ -2,6 +2,7 @@ import { jsPDF } from 'jspdf';
 import type { TextOptionsLight } from 'jspdf';
 
 export const PDF_MARGIN_X = 48;
+const FONT_BASE_PATH = `${(import.meta.env.BASE_URL || '/').replace(/\/?$/, '/')}`;
 
 const isArabicText = (value: string) => /[\u0600-\u06FF]/.test(value);
 
@@ -23,8 +24,8 @@ type FontAsset = {
 
 // Font cache - loaded once, reused across all PDF generations
 const arabicFonts: FontAsset[] = [
-  { url: '/fonts/Cairo-Regular.ttf', vfsName: 'Cairo-Regular.ttf', fontName: 'Cairo', fontStyle: 'normal' },
-  { url: '/fonts/Cairo-Bold.ttf', vfsName: 'Cairo-Bold.ttf', fontName: 'Cairo', fontStyle: 'bold' },
+  { url: `${FONT_BASE_PATH}fonts/Cairo-Regular.ttf`, vfsName: 'Cairo-Regular.ttf', fontName: 'Cairo', fontStyle: 'normal' },
+  { url: `${FONT_BASE_PATH}fonts/Cairo-Bold.ttf`, vfsName: 'Cairo-Bold.ttf', fontName: 'Cairo', fontStyle: 'bold' },
 ];
 
 const arrayBufferToBase64 = (buffer: ArrayBuffer): string => {
