@@ -49,7 +49,7 @@ export default function App() {
   const fabStyle = {
     ...styles.fab,
     opacity: canWhatsApp ? 1 : 0.5,
-    pointerEvents: canWhatsApp ? 'auto' as const : 'none' as const,
+    pointerEvents: canWhatsApp ? 'auto' : 'none',
   };
   const heroWhatsAppButtonProps = {
     style: canWhatsApp ? styles.primaryBtn : styles.disabledBtn,
