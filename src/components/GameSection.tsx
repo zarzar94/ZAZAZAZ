@@ -197,11 +197,6 @@ function ToneGame({ onComplete, onClose }: { onComplete: (r: GameResult) => void
           <h3 style={{ margin: 0 }}>مطابقة النغمات</h3>
           <button style={styles.ghostBtn} onClick={onClose}>إغلاق</button>
         </div>
-        {(!supportsAudio || !supportsSpeech) && (
-          <p style={{ color: '#f59e0b', fontSize: 12, margin: '0 0 10px' }}>
-            Sound and speech cues may be unavailable in this browser.
-          </p>
-        )}
         {!supportsAudio && (
           <p style={{ color: '#f59e0b', fontSize: 12, margin: '0 0 8px' }}>
             Audio is blocked or unsupported in this browser; sound cues may be muted.
@@ -351,12 +346,12 @@ function ClassroomGame({ onComplete, onClose }: { onComplete: (r: GameResult) =>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
           <h3 style={{ margin: 0 }}>محاكاة صف دراسي</h3>
           <button style={styles.ghostBtn} onClick={onClose}>إغلاق</button>
+        </div>
         {(!supportsAudio || !supportsSpeech) && (
           <p style={{ color: '#f59e0b', fontSize: 12, margin: '0 0 10px' }}>
-            Sound and speech cues may be unavailable in this browser.
+            الصوت أو التعليمات الصوتية قد لا تعمل في هذا المتصفح.
           </p>
         )}
-        </div>
         {round === 0 && showInstruction ? (
           <div style={{ textAlign: 'center' }}>
             <p style={{ marginBottom: 16 }}>استمع للتعليمات واضغط على الشكل الصحيح</p>

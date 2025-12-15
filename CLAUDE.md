@@ -30,7 +30,7 @@ VITE_CLINIC_PHONE=+966XXXXXXXXX
   - `Header.tsx` - Navigation bar with mobile menu
   - `SlideViewer.tsx` - Slide presentation with search and modal (memoized cards)
   - `Checklist.tsx` - Interactive auditory processing checklist with PDF export (memoized items)
-  - `GameSection.tsx` - Game cards (Coming Soon)
+  - `GameSection.tsx` - Interactive games (Quiz, Tone Matching, Classroom Simulation)
   - `ContactForm.tsx` - WhatsApp contact form with input validation
   - `styles.ts` - Shared style constants and objects
   - `index.ts` - Barrel export
@@ -74,6 +74,5 @@ Configured for GitHub Pages via GitHub Actions. Set `BASE_PATH` environment vari
 ## Important Notes
 
 - Set `VITE_CLINIC_PHONE` env var before production (app warns in dev if missing)
-- Game section buttons are disabled with "Coming Soon" badges (games not yet implemented)
 - All Arabic strings must use proper UTF-8 encoding to avoid mojibake
 - CSP restricts scripts to 'self' only - no external CDNs
